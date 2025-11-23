@@ -66,7 +66,7 @@ const MANUAL_TOKENS = [
       "Joi symbolizes the technological breakthrough toward industrial-grade execution driven entirely by natural language. By demonstrating drastic efficiency improvements and the unification of animation, logic, and physics, she embodies the concept of accelerated, semantic-based production that reduces development time from hundreds of manual hours to a fully automated flow.",
     ],
     image:
-      "http://ipfs.io/ipfs/bafkreiblr2wqmf6z2j7sxbupvsxdgghjrossy6jjvphcmq4f4d4jf3wwpe",
+      "http://ipfs.io/ipfs/bafybeiezxd2nyqiiv7pkbcvvyyeaioenmviwkjg26uaalk7xuwdvnn3ptu",
     pledged: null,
     goal: 500000,
     backers: 1230,
