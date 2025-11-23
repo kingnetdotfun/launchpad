@@ -1,0 +1,31 @@
+{
+  "name": "Agent Joi",
+  "symbol": "Joi",
+  "image": "https://www.kingnet.fun/assets/joi.png",
+  "properties": [
+    {
+    "category": "X",
+    "files": [],
+    "custom": {
+      "source": "https://x.com/Kingnet_AI"
+    }},
+        {
+    "category": "Web",
+    "files": [],
+    "custom": {
+      "source": "https://www.kingnet.fun/"
+    }},
+   {
+      "trait_type": "Platform",
+      "value": "Meteora"
+    },
+    {
+      "trait_type": "Pool",
+      "value": "DBC"
+    },
+    {
+      "trait_type": "Network",
+      "value": "mainnet"
+    }
+  ]
+}
