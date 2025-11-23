@@ -8,6 +8,25 @@ const btnCreate = $("#createTokenBtn");
 const badgeAddr = $("#walletAddr");
 const btnClaim = $("#claimCreatorFeesBtn");
 const projectMarketCard = document.querySelector("[data-marketcap-card]");
+const navSoonButtons = $$("[data-soon-toast]");
+const viewHome = document.querySelector("[data-view='home']");
+const viewProject = document.querySelector("[data-view='project']");
+const projectBackBtn = document.querySelector("[data-project-back]");
+const projectTags = document.querySelector("[data-project-tags]");
+const projectTitle = document.querySelector("[data-project-title]");
+const projectSubtitle = document.querySelector("[data-project-subtitle]");
+const projectCreatorAvatar = document.querySelector("[data-project-creator-avatar]");
+const projectCreatorName = document.querySelector("[data-project-creator-name]");
+const projectImage = document.querySelector("[data-project-image]");
+const projectDescription = document.querySelector("[data-project-description]");
+const projectBackersEl = document.querySelector("[data-project-backers]");
+const projectDaysEl = document.querySelector("[data-project-days]");
+
+const BASE_PATH = (() => {
+  const path = window.location.pathname || "/";
+  if (path.endsWith("/")) return path;
+  return path.replace(/[^/]+$/, "/");
+})();
 
 const modalCreate = $("#modalCreateToken");
 const closeCreate = $("#closeCreateToken");
@@ -21,8 +40,6 @@ const inpSymbol = $("#ctSymbol");
 const inpBuyAmount = $("#ctBuyAmount");
 
 const API_BASE = "";
-
-const IPFS_GATEWAY = "https://coffee-bright-lungfish-824.mypinata.cloud/ipfs";
 
 const PLACEHOLDER_IMG =
   "data:image/svg+xml;utf8," +
@@ -41,6 +58,13 @@ const MANUAL_TOKENS = [
     category: "Agent",
     description:
       "Next-generation artificial intelligence assistant to help you manage daily tasks and boost productivity.",
+    subtitle:
+      "Next-generation artificial intelligence assistant to help you manage daily tasks and boost productivity.",
+    longDescription: [
+      "Agent Joi is introduced as the demonstrative character of the Kingnet AI Semantic Game Production System. Her role is to showcase how the platform can transform simple natural-language instructions into complete 3D game-development processes. She represents the connection between user intention and high-level technical execution.",
+      "Through Joi, the system highlights the ability to automate traditionally complex animation and development tasks, including skeletal framework generation, keyframe sequence creation, synchronized logic binding, and UI interface generation. With only a one-sentence requirement, the platform intelligently orchestrates multiple stages of the production pipeline without manual configuration.",
+      "Joi symbolizes the technological breakthrough toward industrial-grade execution driven entirely by natural language. By demonstrating drastic efficiency improvements and the unification of animation, logic, and physics, she embodies the concept of accelerated, semantic-based production that reduces development time from hundreds of manual hours to a fully automated flow.",
+    ],
     image:
       "http://ipfs.io/ipfs/bafkreiblr2wqmf6z2j7sxbupvsxdgghjrossy6jjvphcmq4f4d4jf3wwpe",
     pledged: null,
@@ -51,7 +75,7 @@ const MANUAL_TOKENS = [
     isTrending: true,
     marketCap: null,
     createdAt: Date.UTC(2024, 10, 4),
-    url: "project-smart-ai.html",
+    route: "agentjoi",
   },
 ];
 
@@ -458,6 +482,168 @@ let SEARCH_TEXT = "";
 let TOKENS = [];
 let HAS_MARKET_CAP_UPDATE = false;
 
+function normalizeRoute(route) {
+  return String(route ?? "")
+    .trim()
+    .replace(/^\/+/, "")
+    .replace(/\/+$/, "")
+    .toLowerCase();
+}
+
+function buildPathForRoute(route) {
+  const normalized = normalizeRoute(route);
+  if (!normalized) return BASE_PATH || "/";
+  const base = BASE_PATH || "/";
+  return `${base}${normalized}`;
+}
+
+function routeFromLocation() {
+  const path = window.location.pathname || "/";
+  const base = BASE_PATH || "/";
+  let suffix = path.startsWith(base) ? path.slice(base.length) : path;
+  suffix = suffix.replace(/^\/+/, "").replace(/\/+$/, "");
+  if (!suffix) return "";
+  if (/^index(\.html?)?$/i.test(suffix)) return "";
+  return normalizeRoute(suffix);
+}
+
+function findTokenByRoute(route) {
+  const normalized = normalizeRoute(route);
+  if (!normalized) return null;
+  return (
+    TOKENS.find((token) => token.routeKey === normalized || normalizeRoute(token.route) === normalized) ||
+    null
+  );
+}
+
+function creatorInitials(name) {
+  const parts = String(name || "")
+    .split(/\s+/)
+    .filter(Boolean);
+  if (!parts.length) return "--";
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+function populateProjectView(token) {
+  if (!token) return;
+  if (projectTags) {
+    projectTags.innerHTML = "";
+    if (token.category) {
+      const span = document.createElement("span");
+      span.className = "project-tag";
+      span.textContent = token.category;
+      projectTags.appendChild(span);
+    }
+    if (token.isTrending) {
+      const span = document.createElement("span");
+      span.className = "project-tag project-tag--accent";
+      span.textContent = "Trending";
+      projectTags.appendChild(span);
+    }
+  }
+  if (projectTitle) projectTitle.textContent = token.name || "Project";
+  if (projectSubtitle) {
+    projectSubtitle.textContent = token.subtitle || token.description || "";
+  }
+  if (projectCreatorName) projectCreatorName.textContent = token.creator || "—";
+  if (projectCreatorAvatar) {
+    projectCreatorAvatar.textContent = creatorInitials(token.creator);
+  }
+  if (projectImage) {
+    const src = toHttpImage(token.image || "") || PLACEHOLDER_IMG;
+    projectImage.src = src;
+    projectImage.alt = token.name || token.symbol || "Project image";
+  }
+  if (projectDescription) {
+    const paragraphs = Array.isArray(token.longDescription)
+      ? token.longDescription
+      : token.longDescription
+      ? [token.longDescription]
+      : [];
+    const source = paragraphs.length
+      ? paragraphs
+      : token.description
+      ? [token.description]
+      : [];
+    if (source.length) {
+      projectDescription.innerHTML = source
+        .map((text) => `<p>${escapeHTML(text)}</p>`)
+        .join("");
+    } else {
+      projectDescription.innerHTML = "<p>Details coming soon.</p>";
+    }
+  }
+  if (projectBackersEl) {
+    projectBackersEl.textContent =
+      token.backers != null ? fmtNumber(token.backers) : "—";
+  }
+  if (projectDaysEl) {
+    projectDaysEl.textContent =
+      token.daysLeft != null ? fmtNumber(token.daysLeft) : "—";
+  }
+
+  if (projectMarketCard) {
+    const goal = Number(token.goal) || 0;
+    const amount = token.marketCap ?? token.pledged ?? null;
+    projectMarketCard.setAttribute("data-marketcap-mint", token.mint || "");
+    projectMarketCard.setAttribute("data-marketcap-goal", String(goal));
+    const amountEl = projectMarketCard.querySelector("[data-marketcap-amount]");
+    const statusEl = projectMarketCard.querySelector("[data-marketcap-status]");
+    const progressEl = projectMarketCard.querySelector("[data-marketcap-progress]");
+    const updatedEl = projectMarketCard.querySelector("[data-marketcap-updated]");
+    if (statusEl) statusEl.textContent = "Market Cap (USD)";
+    if (amountEl) amountEl.textContent = amount != null ? fmtMoney(amount) : "—";
+    if (progressEl) {
+      const pct = goal > 0 && amount != null ? Math.min(100, Math.max(0, (amount / goal) * 100)) : 0;
+      progressEl.style.width = `${pct}%`;
+    }
+    if (updatedEl) updatedEl.textContent = "—";
+  }
+}
+
+function showProjectView(token, { replaceHistory = false, skipHistory = false } = {}) {
+  if (!viewProject || !viewHome) return;
+  populateProjectView(token);
+  viewHome.classList.add("is-hidden");
+  viewProject.classList.remove("is-hidden");
+  if (!skipHistory && window.history?.pushState) {
+    const routeKey = token.routeKey || normalizeRoute(token.route);
+    const path = routeKey ? buildPathForRoute(routeKey) : buildPathForRoute("");
+    const state = { route: routeKey };
+    if (replaceHistory) {
+      history.replaceState(state, "", path);
+    } else {
+      history.pushState(state, "", path);
+    }
+  }
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function showHome({ replaceHistory = false, skipHistory = false } = {}) {
+  if (viewHome) viewHome.classList.remove("is-hidden");
+  if (viewProject) viewProject.classList.add("is-hidden");
+  if (!skipHistory && window.history?.pushState) {
+    const path = buildPathForRoute("");
+    const state = { route: "" };
+    if (replaceHistory) {
+      history.replaceState(state, "", path);
+    } else {
+      history.pushState(state, "", path);
+    }
+  }
+}
+
+function handleRouteChange(route, { replaceHistory = false, skipHistory = false } = {}) {
+  const normalized = normalizeRoute(route);
+  const token = normalized ? findTokenByRoute(normalized) : null;
+  if (token) {
+    showProjectView(token, { replaceHistory, skipHistory });
+  } else {
+    showHome({ replaceHistory, skipHistory });
+  }
+}
+
 function computeRows() {
   let rows = TOKENS.slice();
   if (SEARCH_TEXT) {
@@ -508,13 +694,11 @@ function renderPage() {
         ? Math.min(100, Math.max(0, (pledged / goal) * 100))
         : 0;
       const pledgedDisplay = pledged != null ? fmtMoney(pledged) : "—";
-      const goalDisplay = goal != null ? fmtMoney(goal) : "—";
-      const backers = t.backers ?? 0;
-      const daysLeft = t.daysLeft ?? "—";
       const card = document.createElement("div");
       card.className = "token-card";
       card.dataset.mint = t.mint || "";
       if (goal != null) card.dataset.goal = String(goal);
+      const routeKey = t.routeKey || normalizeRoute(t.route);
       card.innerHTML = `
         <div class="token-card__media">
           <img src="${escapeHTML(
@@ -552,18 +736,9 @@ function renderPage() {
             <div class="token-card__progress-bar"><span style="width:${progress}%"></span></div>
             <div class="token-card__amounts">
               <span class="token-card__pledged">${pledgedDisplay}</span>
-              <span class="token-card__goal">Target: ${goalDisplay}</span>
             </div>
           </div>
           <div class="token-card__stats">
-            <div>
-              <span class="token-card__stat-value">${fmtNumber(backers)}</span>
-              <span class="token-card__stat-label">Backers</span>
-            </div>
-            <div>
-              <span class="token-card__stat-value">${fmtNumber(daysLeft)}</span>
-              <span class="token-card__stat-label">Days left</span>
-            </div>
             <div>
               <span class="token-card__stat-value">${escapeHTML(displayedCA)}</span>
               <span class="token-card__stat-label">Contract</span>
@@ -573,24 +748,25 @@ function renderPage() {
             t.creator || "—"
           )}</strong></div>
           ${
-            t.url
-              ? `<div class="token-card__actions"><a class="btn btn--primary btn--sm" href="${escapeHTML(
-                  t.url
-                )}">View Project</a></div>`
+            routeKey
+              ? `<div class="token-card__actions"><button class="btn btn--primary btn--sm" type="button" data-project-route="${escapeHTML(
+                  routeKey
+                )}">View Project</button></div>`
               : ""
           }
         </div>
       `;
-      if (t.url) {
+      if (routeKey) {
         card.classList.add("token-card--link");
+        card.dataset.route = routeKey;
         card.setAttribute("role", "link");
         card.setAttribute("tabindex", "0");
         const navigate = () => {
-          window.location.href = t.url;
+          handleRouteChange(routeKey);
         };
         card.addEventListener("click", (ev) => {
           if (ev.target.closest(".token-copy")) return;
-          if (ev.target.closest("a")) return;
+          if (ev.target.closest("[data-project-route]")) return;
           navigate();
         });
         card.addEventListener("keydown", (ev) => {
@@ -682,6 +858,13 @@ document.addEventListener("jupMarketCap", (event) => {
 });
 
 GRID?.addEventListener("click", async (e) => {
+  const viewBtn = e.target.closest("[data-project-route]");
+  if (viewBtn) {
+    e.preventDefault();
+    const route = viewBtn.getAttribute("data-project-route") || "";
+    handleRouteChange(route);
+    return;
+  }
   const copyBtn = e.target.closest(".token-copy");
   if (!copyBtn) return;
   e.stopPropagation();
@@ -701,7 +884,10 @@ GRID?.addEventListener("click", async (e) => {
 function reloadAndRenderCurrentTab() {
   if (!GRID) return;
   if (tabSelector) tabSelector.value = CURRENT_TAB;
-  TOKENS = MANUAL_TOKENS.map((t) => ({ ...t }));
+  TOKENS = MANUAL_TOKENS.map((t) => ({
+    ...t,
+    routeKey: normalizeRoute(t.route || t.routeKey),
+  }));
   renderPage();
 }
 
@@ -729,6 +915,11 @@ pageNext?.addEventListener("click", () => {
   renderPage();
 });
 
+projectBackBtn?.addEventListener("click", (event) => {
+  event.preventDefault();
+  handleRouteChange("", { replaceHistory: true });
+});
+
 // ===== Boot =====
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -748,4 +939,29 @@ window.addEventListener("DOMContentLoaded", () => {
     if (progressEl) progressEl.style.width = "0%";
     if (updatedEl) updatedEl.textContent = "—";
   }
+
+  navSoonButtons.forEach((btn) => {
+    btn.addEventListener("click", (event) => {
+      event.preventDefault();
+      const already = btn.classList.contains("is-toast");
+      btn.classList.add("is-toast");
+      const prev = btn.textContent;
+      btn.textContent = "Soon";
+      if (!already) {
+        setTimeout(() => {
+          btn.textContent = prev;
+          btn.classList.remove("is-toast");
+        }, 1500);
+      }
+    });
+  });
+
+  const initialRoute = routeFromLocation();
+  handleRouteChange(initialRoute, { replaceHistory: true });
+});
+
+window.addEventListener("popstate", () => {
+  const stateRoute = normalizeRoute(window.history?.state?.route);
+  const fallbackRoute = routeFromLocation();
+  handleRouteChange(stateRoute || fallbackRoute, { skipHistory: true });
 });

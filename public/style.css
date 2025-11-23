@@ -14,6 +14,10 @@
   --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.65);
 }
 
+.is-hidden {
+  display: none !important;
+}
+
 *,
 *::before,
 *::after {
@@ -96,6 +100,10 @@ body {
 
 .nav-links a:hover {
   color: #ffffff;
+}
+
+.nav-links a.is-toast {
+  color: var(--accent);
 }
 
 .actions {
@@ -983,6 +991,10 @@ body {
   color: rgba(200, 210, 255, 0.85);
   text-decoration: none;
   margin-bottom: 18px;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  padding: 0;
 }
 
 .project-back::before {

@@ -22,8 +22,8 @@
 
       <div class="nav-links">
         <a href="#featured">Explore</a>
-        <a href="#featured">Nodes</a>
-        <a href="#featured">Bridge</a>
+        <a href="#featured" data-soon-toast>Nodes</a>
+        <a href="#featured" data-soon-toast>Bridge</a>
       </div>
 
       <nav class="actions">
@@ -40,92 +40,145 @@
       </nav>
     </div>
   </header>
-
-  <section class="hero">
-    <div class="hero__bg" aria-hidden="true"></div>
-    <div class="wrap hero__wrap">
-      <div class="hero__head">
-        <span class="hero__eyebrow">Kingnet AI Launchpad</span>
-        <h1 class="hero__title">Fuel the next era of Kingnet AI projects</h1>
-        <p class="hero__subtitle">Launch, showcase and scale Solana-native experiences with a neon bridge-inspired interface built for momentum.</p>
-        <div class="hero__actions">
-          <button class="btn btn--primary" type="button">
-            <span class="btn__label">Launch Project</span>
-          </button>
-          <a href="#featured" class="btn btn--ghost btn--xl">
-            <span class="btn__label">Explore Projects</span>
-          </a>
-          <a class="btn btn--ghost btn--xl" href="https://x.com/KingnetAI" target="_blank" rel="noopener">
-            <span class="btn__icon" aria-hidden="true">𝕏</span>
-          </a>
+  <main>
+    <div data-view="home">
+      <section class="hero">
+        <div class="hero__bg" aria-hidden="true"></div>
+        <div class="wrap hero__wrap">
+          <div class="hero__head">
+            <span class="hero__eyebrow">Kingnet AI Launchpad</span>
+            <h1 class="hero__title">Fuel the next era of Kingnet AI projects</h1>
+            <p class="hero__subtitle">Launch, showcase and scale Solana-native experiences with a neon bridge-inspired interface built for momentum.</p>
+            <div class="hero__actions">
+              <button class="btn btn--primary" type="button">
+                <span class="btn__label">Launch Project</span>
+              </button>
+              <a href="#featured" class="btn btn--ghost btn--xl">
+                <span class="btn__label">Explore Projects</span>
+              </a>
+              <a class="btn btn--ghost btn--xl" href="https://x.com/Kingnet_AI" target="_blank" rel="noopener">
+                <span class="btn__icon" aria-hidden="true">𝕏</span>
+              </a>
+            </div>
+          </div>
+          <div class="hero__metrics" role="list">
+            <article class="metric-card" role="listitem">
+              <span class="metric-card__value">2,580</span>
+              <span class="metric-card__label">Active Projects</span>
+              <span class="metric-card__delta metric-card__delta--up">+12%</span>
+            </article>
+            <article class="metric-card" role="listitem">
+              <span class="metric-card__value">$3.2M</span>
+              <span class="metric-card__label">Market Cap</span>
+              <span class="metric-card__delta metric-card__delta--up">+8%</span>
+            </article>
+            <article class="metric-card" role="listitem">
+              <span class="metric-card__value">$580K</span>
+              <span class="metric-card__label">24h Volume</span>
+              <span class="metric-card__delta metric-card__delta--up">+24%</span>
+            </article>
+            <article class="metric-card" role="listitem">
+              <span class="metric-card__value">15,230</span>
+              <span class="metric-card__label">Backers</span>
+              <span class="metric-card__delta metric-card__delta--up">+5%</span>
+            </article>
+          </div>
         </div>
-      </div>
-      <div class="hero__metrics" role="list">
-        <article class="metric-card" role="listitem">
-          <span class="metric-card__value">2,580</span>
-          <span class="metric-card__label">Active Projects</span>
-          <span class="metric-card__delta metric-card__delta--up">+12%</span>
-        </article>
-        <article class="metric-card" role="listitem">
-          <span class="metric-card__value">$3.2M</span>
-          <span class="metric-card__label">Market Cap</span>
-          <span class="metric-card__delta metric-card__delta--up">+8%</span>
-        </article>
-        <article class="metric-card" role="listitem">
-          <span class="metric-card__value">$580K</span>
-          <span class="metric-card__label">24h Volume</span>
-          <span class="metric-card__delta metric-card__delta--up">+24%</span>
-        </article>
-        <article class="metric-card" role="listitem">
-          <span class="metric-card__value">15,230</span>
-          <span class="metric-card__label">Backers</span>
-          <span class="metric-card__delta metric-card__delta--up">+5%</span>
-        </article>
-      </div>
-    </div>
-  </section>
+      </section>
 
-
-  <section id="featured" class="section section--featured">
-    <div class="wrap">
-      <div class="section__head section__head--split">
-        <div class="section__intro">
-          <h2>Featured Projects</h2>
-          <p>Explore the most innovative crowdfunding projects and support creators in realizing their dreams.</p>
+      <section id="featured" class="section section--featured">
+        <div class="wrap">
+          <div class="section__head section__head--split">
+            <div class="section__intro">
+              <h2>Featured Projects</h2>
+              <p>Explore the most innovative crowdfunding projects and support creators in realizing their dreams.</p>
+            </div>
+          </div>
+          <div class="filter-row">
+            <label class="filter filter--search">
+              <span class="sr-only">Search projects</span>
+              <input id="search" type="text" placeholder="Search projects..." />
+            </label>
+            <button class="filter filter--select" type="button" disabled aria-disabled="true">
+              <span>Select category</span>
+            </button>
+            <label class="filter filter--select">
+              <span class="sr-only">Sort projects</span>
+              <select id="tabSelector" class="filter__select">
+                <option value="featured">Trending</option>
+                <option value="new">New</option>
+                <option value="all">All Projects</option>
+              </select>
+            </label>
+          </div>
+          <div id="grid" class="grid" aria-live="polite"></div>
+          <div class="pager">
+            <button id="pagePrev" class="btn btn--ghost btn--sm" disabled>Prev</button>
+            <span id="pageLabel">1</span>
+            <button id="pageNext" class="btn btn--ghost btn--sm" disabled>Next</button>
+          </div>
         </div>
-      </div>
-      <div class="filter-row">
-        <label class="filter filter--search">
-          <span class="sr-only">Search projects</span>
-          <input id="search" type="text" placeholder="Search projects..." />
-        </label>
-        <button class="filter filter--select" type="button" disabled aria-disabled="true">
-          <span>Select category</span>
-        </button>
-        <label class="filter filter--select">
-          <span class="sr-only">Sort projects</span>
-          <select id="tabSelector" class="filter__select">
-            <option value="featured">Trending</option>
-            <option value="new">New</option>
-            <option value="all">All Projects</option>
-          </select>
-        </label>
-      </div>
-      <div id="grid" class="grid" aria-live="polite"></div>
-      <div class="pager">
-        <button id="pagePrev" class="btn btn--ghost btn--sm" disabled>Prev</button>
-        <span id="pageLabel">1</span>
-        <button id="pageNext" class="btn btn--ghost btn--sm" disabled>Next</button>
-      </div>
-    </div>
-  </section>
+      </section>
 
-  <section id="about" class="about">
-    <div class="wrap">
-      <h3>About</h3>
-      <p>KINGNET AI is a Solana launchpad front-end with a neon bridge-inspired look. Launch tokens, list projects, and showcase the Kingnet ecosystem gallery.</p>
+      <section id="about" class="about">
+        <div class="wrap">
+          <h3>About</h3>
+          <p>KINGNET AI is a Solana launchpad front-end with a neon bridge-inspired look. Launch tokens, list projects, and showcase the Kingnet ecosystem gallery.</p>
+        </div>
+      </section>
     </div>
-  </section>
+
+    <section class="project-page is-hidden" data-view="project">
+      <div class="wrap project-layout">
+        <article class="project-main">
+          <button class="project-back" type="button" data-project-back>Back to Projects</button>
+          <div class="project-tags" data-project-tags></div>
+          <h1 class="project-title" data-project-title>Project</h1>
+          <p class="project-subtitle" data-project-subtitle></p>
+          <div class="project-creator">
+            <div class="project-creator__avatar" data-project-creator-avatar>--</div>
+            <div>
+              <div class="label">Created by</div>
+              <div><strong data-project-creator-name></strong></div>
+            </div>
+          </div>
+          <div class="project-media">
+            <img src="" alt="" data-project-image />
+          </div>
+          <div class="project-tabs">
+            <button class="project-tab is-active" type="button" disabled>Description</button>
+          </div>
+          <section class="project-section">
+            <h3>About This Project</h3>
+            <div data-project-description></div>
+          </section>
+        </article>
+
+        <aside class="project-sidebar">
+          <div class="project-card" data-marketcap-card data-marketcap-mint="" data-marketcap-goal="0">
+            <div class="project-amount" data-marketcap-amount>—</div>
+            <div class="project-goal" data-marketcap-status>Market Cap (USD)</div>
+            <div class="project-progress"><span data-marketcap-progress style="width:0%"></span></div>
+            <div class="project-support-meta">
+              <div><span data-marketcap-updated>—</span><span>last update</span></div>
+              <div><span data-project-backers>—</span><span>backers</span></div>
+              <div><span data-project-days>—</span><span>days left</span></div>
+            </div>
+            <div class="project-card__actions">
+              <button class="btn btn--ghost" type="button">
+                <span class="btn__icon" aria-hidden="true">⭐</span>
+                <span class="btn__label">Favorite</span>
+              </button>
+              <button class="btn btn--ghost" type="button">
+                <span class="btn__icon" aria-hidden="true">📤</span>
+                <span class="btn__label">Share</span>
+              </button>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
 
   <footer class="footer">© <span id="year"></span> kingnet.ai</footer>
 
