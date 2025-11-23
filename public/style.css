@@ -35,6 +35,17 @@ body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
 }
 
+.announcement {
+  padding: 10px 16px;
+  text-align: center;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: rgba(76, 201, 240, 0.14);
+  color: rgba(226, 232, 255, 0.85);
+  border-bottom: 1px solid rgba(76, 201, 240, 0.25);
+}
+
 .wrap {
   width: min(1180px, 92%);
   margin-inline: auto;
