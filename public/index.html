@@ -4,225 +4,115 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Launch USD1</title>
-  <meta name="description" content="USD1-based launchpad on Solana" />
+  <title>KINGNET AI Launchpad</title>
+  <link rel="icon" href="/assets/logo-kingnet.svg" type="image/svg+xml">
+
+  <meta name="description" content="KINGNET AI – Solana launchpad" />
   <link rel="stylesheet" href="style.css" />
-  <style>
-    .spotlight {
-      padding: 22px 0 6px;
-    }
 
-    .spotlight__wrap {
-      width: min(1180px, 92%);
-      margin: 0 auto 8px;
-    }
-
-    .token-card--spotlight {
-      background:
-        radial-gradient(600px 180px at 10% -40px, rgba(255, 215, 0, .10), transparent 60%),
-        radial-gradient(600px 180px at 90% 140%, rgba(255, 215, 0, .08), transparent 60%),
-        rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 215, 0, .35);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, .30), inset 0 0 0 1px rgba(255, 215, 0, .08);
-    }
-
-    .token-card--spotlight .token-logo {
-      border-color: rgba(255, 215, 0, .45);
-      box-shadow: 0 10px 26px rgba(0, 0, 0, .35), 0 0 0 2px rgba(255, 215, 0, .15) inset;
-    }
-
-    .token-card--spotlight .token-ca-badge {
-      border-color: rgba(255, 215, 0, .35);
-      background: rgba(255, 215, 0, .10);
-      color: #f6f3e7;
-    }
-
-
-    .token-card--spotlight .label {
-      color: #f0e6c0;
-      opacity: .85;
-    }
-
-    .token-card--spotlight .token-mc-value {
-      color: #ffe28a;
-      font-weight: 800;
-      letter-spacing: .2px;
-    }
-
-    .btn--claim {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      font-weight: 800;
-      letter-spacing: .2px;
-      text-transform: uppercase;
-      font-size: .9rem;
-      background: linear-gradient(135deg, #ffd700 0%, #ffb300 100%);
-      color: #1b1b1b;
-      border: 1px solid rgba(0, 0, 0, .12);
-      box-shadow: 0 6px 22px rgba(255, 179, 0, .25), inset 0 1px 0 rgba(255, 255, 255, .35);
-      transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
-      animation: ring 2.4s ease-out infinite;
-    }
-
-    .btn--claim:hover {
-      transform: translateY(-1px);
-      filter: brightness(1.03);
-    }
-
-    .btn--claim:active {
-      transform: translateY(0);
-    }
-
-    .btn--claim .badge {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 999px;
-      font-weight: 900;
-      font-size: .75rem;
-      line-height: 1;
-      background: rgba(0, 0, 0, .15);
-      border: 1px solid rgba(0, 0, 0, .18);
-    }
-
-    @keyframes ring {
-      0% {
-        box-shadow: 0 0 0 0 rgba(255, 215, 0, .50);
-      }
-
-      70% {
-        box-shadow: 0 0 0 14px rgba(255, 215, 0, 0);
-      }
-
-      100% {
-        box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
-      }
-    }
-
-    @media (max-width: 720px) {
-      .btn--claim {
-        padding: 9px 12px;
-        font-size: .85rem;
-        gap: 8px;
-      }
-
-      .btn--claim .badge {
-        padding: 2px 6px;
-        font-size: .7rem;
-      }
-    }
-
-    .hero-notice {
-      margin: 12px 0 0;
-      padding: 10px 12px;
-      border-radius: 12px;
-      background: rgba(255, 215, 0, .12);
-      border: 1px solid rgba(255, 215, 0, .35);
-      color: #ffe28a;
-      font-weight: 600;
-    }
-
-    .hero-notice strong {
-      color: #fff0b3;
-    }
-  </style>
 </head>
 
 <body>
   <header class="topbar">
     <div class="wrap nav">
       <a class="brand" href="/">
-        <img src="/assets/logo-eagle.svg" alt="USD1" class="brand__logo" />
-        <span class="brand__name">Launch on USD1</span>
+        <img src="/assets/logo-kingnet.svg" alt="KINGNET" class="brand__logo" />
+        <span class="brand__name">KINGNET AI</span>
       </a>
+
+      <div class="nav-links">
+        <a href="#featured">Explore</a>
+        <a href="#featured">Nodes</a>
+        <a href="#featured">Bridge</a>
+      </div>
+
       <nav class="actions">
-        <button id="connectWallet" class="btn btn--primary">Connect Wallet</button>
+        <button id="connectWallet" class="btn btn--primary">
+          <span class="btn__label">Connect Wallet</span>
+        </button>
         <span id="walletAddr" class="wallet-addr" style="display:none"></span>
         <button id="createTokenBtn" class="btn btn--soft btn--sm" style="display:none">Create Token</button>
         <button id="claimCreatorFeesBtn" class="btn btn--claim" style="display:none"
-          title="Claim your 0.5% creator fees">
+          title="Claim your creator rewards">
           ✨ Claim creator fees <span class="badge">0.5%</span>
         </button>
-
-
         <button id="disconnectWallet" class="btn btn--soft btn--sm" style="display:none">Disconnect</button>
       </nav>
     </div>
   </header>
 
-  <section class="heroUSA">
-    <div class="wrap">
-      <div class="heroUSA__card">
-        <div class="heroUSA__bg"></div>
-        <div class="heroUSA__content">
-          <div class="heroUSA__emblem">
-            <img src="/assets/logo-eagle.svg" alt="USD1" />
-          </div>
-          <h1>Launch on USD1</h1>
-          <p>A bold leap into Solana America's Launchpad. Discover, list and showcase early USD1 tokens.</p>
-          <div class="heroUSA__cta">
-            <a href="#featured" class="btn btn--primary">Explore Tokens</a>
-            <a href="https://x.com/LaunchUSD1fun" target="_blank" class="btn btn--ghost" rel="noopener">Follow on X</a>
-
-          </div>
-          <p class="hero-notice" id="creatorFeesNotice" role="note" aria-live="polite">
-            Creator fees updated to <strong>0.5%</strong> + CPMM LP fees after migration
-          </p>
-
-          <div class="heroUSA__chips">
-            <span class="chip" role="note" aria-live="polite">Claim instantly!</span>
-          </div>
+  <section class="hero">
+    <div class="hero__bg" aria-hidden="true"></div>
+    <div class="wrap hero__wrap">
+      <div class="hero__head">
+        <span class="hero__eyebrow">Kingnet AI Launchpad</span>
+        <h1 class="hero__title">Fuel the next era of Kingnet AI projects</h1>
+        <p class="hero__subtitle">Launch, showcase and scale Solana-native experiences with a neon bridge-inspired interface built for momentum.</p>
+        <div class="hero__actions">
+          <button class="btn btn--primary" type="button">
+            <span class="btn__label">Launch Project</span>
+          </button>
+          <a href="#featured" class="btn btn--ghost btn--xl">
+            <span class="btn__label">Explore Projects</span>
+          </a>
+          <a class="btn btn--ghost btn--xl" href="https://x.com/KingnetAI" target="_blank" rel="noopener">
+            <span class="btn__icon" aria-hidden="true">𝕏</span>
+          </a>
         </div>
+      </div>
+      <div class="hero__metrics" role="list">
+        <article class="metric-card" role="listitem">
+          <span class="metric-card__value">2,580</span>
+          <span class="metric-card__label">Active Projects</span>
+          <span class="metric-card__delta metric-card__delta--up">+12%</span>
+        </article>
+        <article class="metric-card" role="listitem">
+          <span class="metric-card__value">$3.2M</span>
+          <span class="metric-card__label">Market Cap</span>
+          <span class="metric-card__delta metric-card__delta--up">+8%</span>
+        </article>
+        <article class="metric-card" role="listitem">
+          <span class="metric-card__value">$580K</span>
+          <span class="metric-card__label">24h Volume</span>
+          <span class="metric-card__delta metric-card__delta--up">+24%</span>
+        </article>
+        <article class="metric-card" role="listitem">
+          <span class="metric-card__value">15,230</span>
+          <span class="metric-card__label">Backers</span>
+          <span class="metric-card__delta metric-card__delta--up">+5%</span>
+        </article>
       </div>
     </div>
   </section>
 
-  <section class="spotlight" aria-labelledby="spotlightTitle">
-    <div class="spotlight__wrap">
-      <h2 id="spotlightTitle" style="margin:0 0 10px; font-size:1.25rem; font-weight:800; letter-spacing:.2px;">
-        Spotlight</h2>
-      <div id="spotlightCard" class="token-card token-card--spotlight">
-        <div class="token-logo-wrap">
-          <img id="spotlightImg" class="token-logo" src="/assets/logo-eagle.png" alt="Spotlight Token" />
-        </div>
-        <div class="token-meta">
-          <div class="token-title">
-            <span id="spotlightName" class="token-name">LaunchUSD1 Spotlight</span>
-            <span id="spotlightSymbol" class="token-symbol">(USD1)</span>
-          </div>
-          <div class="token-ca-row">
-            <span id="spotlightCA" class="token-ca-badge">wyjLHT…ptUSD1</span>
-            <button id="spotlightCopy" class="btn btn--ghost btn--sm"
-              data-ca="wyjLHT5JHYWiwTgjSqKQroBXiJ9SPntyTgUiBptUSD1">Copy</button>
-          </div>
-          <div class="token-mc">
-            <span class="label">Market Cap:</span>
-            <span id="spotlightMc" class="token-mc-value">—</span>
-          </div>
+
+  <section id="featured" class="section section--featured">
+    <div class="wrap">
+      <div class="section__head section__head--split">
+        <div class="section__intro">
+          <h2>Featured Projects</h2>
+          <p>Explore the most innovative crowdfunding projects and support creators in realizing their dreams.</p>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section id="featured" class="section">
-    <div class="wrap">
-      <div class="section__head">
-        <h2>Featured Tokens</h2>
-        <div class="toolbar">
-          <div class="search">
-            <input id="search" type="text" placeholder="Search tokens…" />
-          </div>
-          <div class="tabs" id="tabs">
-            <button class="tab is-active" data-filter="featured" aria-pressed="true">Featured</button>
-            <button class="tab" data-filter="new" aria-pressed="false">New</button>
-            <button class="tab" data-filter="all" aria-pressed="false">All Tokens</button>
-          </div>
-        </div>
+      <div class="filter-row">
+        <label class="filter filter--search">
+          <span class="sr-only">Search projects</span>
+          <input id="search" type="text" placeholder="Search projects..." />
+        </label>
+        <button class="filter filter--select" type="button" disabled aria-disabled="true">
+          <span>Select category</span>
+        </button>
+        <label class="filter filter--select">
+          <span class="sr-only">Sort projects</span>
+          <select id="tabSelector" class="filter__select">
+            <option value="featured">Trending</option>
+            <option value="new">New</option>
+            <option value="all">All Projects</option>
+          </select>
+        </label>
       </div>
       <div id="grid" class="grid" aria-live="polite"></div>
-      <div class="pager" style="margin-top:12px; display:flex; gap:8px; justify-content:center; align-items:center;">
+      <div class="pager">
         <button id="pagePrev" class="btn btn--ghost btn--sm" disabled>Prev</button>
         <span id="pageLabel">1</span>
         <button id="pageNext" class="btn btn--ghost btn--sm" disabled>Next</button>
@@ -233,13 +123,14 @@
   <section id="about" class="about">
     <div class="wrap">
       <h3>About</h3>
-      <p>Launch your favorite tokens now paired with USD1. Creator rewards enabled.</p>
+      <p>KINGNET AI is a Solana launchpad front-end with a neon bridge-inspired look. Launch tokens, list projects, and showcase the Kingnet ecosystem gallery.</p>
     </div>
   </section>
 
-  <footer class="footer">© <span id="year"></span> launchusd1.fun</footer>
+  <footer class="footer">© <span id="year"></span> kingnet.ai</footer>
 
-  <div id="modalCreateToken" class="modal modal--sheet" aria-hidden="true">
+  <!-- Create token modal -->
+  <div id="modalCreateToken" class="modal" aria-hidden="true">
     <div class="modal__panel">
       <div class="modal__header">
         <h3 class="modal__title">Create Token</h3>
@@ -265,12 +156,12 @@
 
         <div class="field">
           <label class="field__label" for="ctSymbol">Ticker</label>
-          <input id="ctSymbol" type="text" class="field__input" placeholder="MAT" />
+          <input id="ctSymbol" type="text" class="field__input" placeholder="KNET" />
         </div>
 
         <div class="field">
-          <label class="field__label" for="ctBuyAmount">Buy amount (in USD1)</label>
-          <input id="ctBuyAmount" type="number" step="any" class="field__input" placeholder="e.g., 100" />
+          <label class="field__label" for="ctBuyAmount">Buy amount (in SOL)</label>
+          <input id="ctBuyAmount" type="number" step="any" class="field__input" placeholder="e.g., 5" />
         </div>
 
         <details class="adv">
@@ -291,56 +182,8 @@
 
   <script src="https://unpkg.com/@solana/web3.js@1.95.3/lib/index.iife.min.js"></script>
   <script src="script.js"></script>
-  <script>
-    (function () {
-      const mint = "wyjLHT5JHYWiwTgjSqKQroBXiJ9SPntyTgUiBptUSD1";
-      const $id = (x) => document.getElementById(x);
-      const elMc = $id("spotlightMc");
-      const elName = $id("spotlightName");
-      const elSym = $id("spotlightSymbol");
-      const elCA = $id("spotlightCA");
-      const elCopy = $id("spotlightCopy");
-      const elImg = $id("spotlightImg");
+  <script src="jupiter-marketcap.js"></script>
 
-      function fmtUSD(n) {
-        try { return Number(n).toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }); }
-        catch { return "$" + n; }
-      }
-
-      try {
-        elCA.textContent = mint.slice(0, 6) + "…" + mint.slice(-6);
-        elCopy.addEventListener("click", async () => {
-          try { await navigator.clipboard.writeText(mint); } catch { }
-          const prev = elCopy.textContent;
-          elCopy.textContent = "Copied!";
-          elCopy.classList.add("success");
-          setTimeout(() => { elCopy.textContent = prev; elCopy.classList.remove("success"); }, 1200);
-        });
-      } catch { }
-
-      async function refreshSpotlight() {
-        try {
-          if (typeof fetchInfoFor !== "function") return;
-          const info = await fetchInfoFor(mint);
-          if (!info) return;
-
-          if (info.name) elName.textContent = info.name;
-          if (info.symbol) elSym.textContent = "(" + info.symbol + ")";
-          if (typeof info.marketCap === "number") elMc.textContent = fmtUSD(info.marketCap);
-
-          if (info.image) {
-            try {
-              const url = (typeof toHttpImage === "function") ? toHttpImage(info.image) : info.image;
-              if (url) elImg.src = url;
-            } catch { }
-          }
-        } catch { }
-      }
-
-      refreshSpotlight();
-      setInterval(refreshSpotlight, 30000);
-    })();
-  </script>
 </body>
 
 </html>

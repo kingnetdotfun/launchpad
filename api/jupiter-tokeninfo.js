@@ -1,8 +1,8 @@
+import fs from "node:fs/promises";
+import path from "node:path";
+
 const JUP_BASE = process.env.JUP_API_BASE || "https://lite-api.jup.ag";
 const TOKEN_SEARCH_URL = `${JUP_BASE}/tokens/v2/search`;
-
-const fs = require("node:fs/promises");
-const path = require("node:path");
 
 function unique(arr) {
   return [...new Set(arr.filter(Boolean))];
@@ -98,7 +98,7 @@ function jsonError(res, status, message, extra = {}) {
   json(res, status, { ok: false, error: message, ...extra });
 }
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   if (req.method === "OPTIONS") {
     const ORIGIN = process.env.ALLOWED_ORIGIN || "https://launchusd1.fun";
     res.setHeader("Access-Control-Allow-Origin", ORIGIN);
@@ -133,4 +133,4 @@ module.exports = async (req, res) => {
       details: String(err?.message || err),
     });
   }
-};
+}

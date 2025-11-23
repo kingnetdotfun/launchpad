@@ -87,7 +87,19 @@ export default async function handler(req, res) {
       const pageSize = Math.max(1, Math.min(50, Number(url.searchParams.get('pageSize') || 12)));
       const page = Math.max(1, Number(url.searchParams.get('page') || 1));
 
-      const mints = await kv.lrange(ORDER_KEY, 0, -1);
+      const mintParams = [
+        ...url.searchParams.getAll('mint'),
+        ...url.searchParams.getAll('mints')
+      ];
+      const filterMints = [...new Set(
+        mintParams
+          .flatMap((entry) => String(entry || '').split(','))
+          .map((s) => s.trim())
+          .filter(Boolean)
+      )];
+
+      const applyPagination = filterMints.length === 0;
+      const mints = filterMints.length ? filterMints : await kv.lrange(ORDER_KEY, 0, -1);
       const tokens = [];
 
       for (const m of mints) {
@@ -114,10 +126,19 @@ export default async function handler(req, res) {
       }
 
       const total = tokens.length;
-      const start = (page - 1) * pageSize;
-      const slice = tokens.slice(start, start + pageSize);
+      let slice = tokens;
+      let nextPage = page;
+      let nextSize = pageSize;
 
-      return res.status(200).json({ ok: true, total, page, pageSize, items: slice });
+      if (applyPagination) {
+        const start = (page - 1) * pageSize;
+        slice = tokens.slice(start, start + pageSize);
+      } else {
+        nextPage = 1;
+        nextSize = total || filterMints.length || 0;
+      }
+
+      return res.status(200).json({ ok: true, total, page: nextPage, pageSize: nextSize, items: slice });
     } catch (e) {
       console.error('[tokens GET] error:', e);
       return res.status(500).json({ ok: false, error: String(e?.message || e) });

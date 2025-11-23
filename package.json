@@ -1,12 +1,11 @@
 {
-  "name": "launchusd1",
+  "name": "kingnet",
   "private": false,
   "type": "module",
   "engines": {
     "node": ">=18 <25"
   },
   "scripts": {
-    "dev": "vercel dev",
     "build": "echo \"no build step\"",
     "start": "vercel dev"
   },
