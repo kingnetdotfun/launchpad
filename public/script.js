@@ -52,7 +52,7 @@ const PLACEHOLDER_IMG =
 
 const MANUAL_TOKENS = [
   {
-    mint: "13Dhe7MQLqXQbwMc9nRVGiBGzMfRTjwLqfTFtQjUKNET",
+    mint: "XQ2xvSxKh5sZqJxoRpby23p3K5WHQTEgN4pzVA1KNET",
     name: "Agent Joi",
     symbol: "Joi",
     category: "Agent",
