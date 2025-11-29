@@ -2,6 +2,7 @@
   "name": "Agent Joi",
   "symbol": "Joi",
   "image": "https://www.kingnet.fun/assets/joi.png",
+  "website": "https://www.kingnet.fun/",
   "properties": [
     {
     "category": "X",
@@ -28,4 +29,5 @@
       "value": "mainnet"
     }
   ]
+
 }
