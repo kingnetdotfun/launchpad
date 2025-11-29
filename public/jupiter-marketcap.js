@@ -1,5 +1,5 @@
 (() => {
-  const MINT = "13Dhe7MQLqXQbwMc9nRVGiBGzMfRTjwLqfTFtQjUKNET";
+  const MINT = "XQ2xvSxKh5sZqJxoRpby23p3K5WHQTEgN4pzVA1KNET";
   const URL = `https://lite-api.jup.ag/tokens/v2/search?query=${encodeURIComponent(MINT)}`;
   const REFRESH_MS = 60_000;
 
